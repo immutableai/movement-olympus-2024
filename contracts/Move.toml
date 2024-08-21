@@ -1,0 +1,16 @@
+[package]
+name = "nocturne-job"
+version = "1.0.0"
+authors = []
+
+[addresses]
+nocturne_job_addr = "33fb744c44cddf9f5833be88e59c30852ef7f3cadbda428dc09b220b6c3a19eb"
+
+[dev-addresses]
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dev-dependencies]

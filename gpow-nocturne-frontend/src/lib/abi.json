@@ -1,0 +1,1969 @@
+{
+  "source": {
+    "hash": "0xa35031478d46ec8d3887de4e85e62b74ded81e55f5663978a4d90b0edeaa1b37",
+    "language": "ink! 5.0.0",
+    "compiler": "rustc 1.78.0",
+    "build_info": {
+      "build_mode": "Debug",
+      "cargo_contract_version": "4.1.1",
+      "rust_toolchain": "stable-x86_64-unknown-linux-gnu",
+      "wasm_opt_settings": {
+        "keep_debug_symbols": false,
+        "optimization_passes": "Z"
+      }
+    }
+  },
+  "contract": {
+    "name": "nocturne_job",
+    "version": "0.1.0",
+    "authors": [
+      "Greg Horejsi <greg@immu.ai>"
+    ]
+  },
+  "image": null,
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "label": "max_retries",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "label": "max_tasks",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          "Constructor that initializes jobs from externally provided StorageVec."
+        ],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
+          ],
+          "type": 24
+        },
+        "selector": "0x9bae9d5e"
+      },
+      {
+        "args": [],
+        "default": true,
+        "docs": [
+          "The default constructor"
+        ],
+        "label": "default",
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
+          ],
+          "type": 24
+        },
+        "selector": "0xed4b9d1b"
+      }
+    ],
+    "docs": [],
+    "environment": {
+      "accountId": {
+        "displayName": [
+          "AccountId"
+        ],
+        "type": 0
+      },
+      "balance": {
+        "displayName": [
+          "Balance"
+        ],
+        "type": 5
+      },
+      "blockNumber": {
+        "displayName": [
+          "BlockNumber"
+        ],
+        "type": 8
+      },
+      "chainExtension": {
+        "displayName": [
+          "ChainExtension"
+        ],
+        "type": 39
+      },
+      "hash": {
+        "displayName": [
+          "Hash"
+        ],
+        "type": 38
+      },
+      "maxEventTopics": 4,
+      "staticBufferSize": 16384,
+      "timestamp": {
+        "displayName": [
+          "Timestamp"
+        ],
+        "type": 11
+      }
+    },
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [
+              "The creator of the job"
+            ],
+            "indexed": true,
+            "label": "creator",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [
+              "The job id"
+            ],
+            "indexed": true,
+            "label": "job_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "docs": [
+          "JobSubmitted event",
+          "This event is emitted when a new job is submitted successfully",
+          "The event contains the creator of the job and the job id",
+          "The job id is the index of the job in the jobs storage"
+        ],
+        "label": "JobSubmitted",
+        "module_path": "nocturne_job::nocturne_job",
+        "signature_topic": "0x759b2ac4afb2ae0d187fcf4703ec24e8869bd0c68db7c5549139e6fa4b28959f"
+      },
+      {
+        "args": [
+          {
+            "docs": [
+              "The creator of the job"
+            ],
+            "indexed": true,
+            "label": "creator",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [
+              "The job id"
+            ],
+            "indexed": true,
+            "label": "job_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "docs": [
+              "The status of the job"
+            ],
+            "indexed": true,
+            "label": "status",
+            "type": {
+              "displayName": [
+                "JobStatus"
+              ],
+              "type": 10
+            }
+          }
+        ],
+        "docs": [
+          "JobUpdated event",
+          "This event is emitted when a job is updated successfully",
+          "The event contains the creator of the job and the job id and enum of the job status"
+        ],
+        "label": "JobUpdated",
+        "module_path": "nocturne_job::nocturne_job",
+        "signature_topic": "0xb050170f4363c0ec7bc51afad1ace94543112c3c9a86665a177ee531e11a776c"
+      },
+      {
+        "args": [
+          {
+            "docs": [
+              "The creator of the job"
+            ],
+            "indexed": true,
+            "label": "creator",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [
+              "The job id"
+            ],
+            "indexed": true,
+            "label": "job_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "docs": [
+              "Task id"
+            ],
+            "indexed": true,
+            "label": "task_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "docs": [
+          "JobCompleted event",
+          "This event is emitted when a job is completed successfully",
+          "The event contains the creator of the job and the job id",
+          "The job id is the index of the job in the jobs storage",
+          "The event also contains the cid of the result data of the job"
+        ],
+        "label": "JobCompleted",
+        "module_path": "nocturne_job::nocturne_job",
+        "signature_topic": "0xae2a9085be1dcd2eef11855cd0c7aa931e942d74baebd244bdac7066122d7da6"
+      },
+      {
+        "args": [
+          {
+            "docs": [
+              "The account id of the worker"
+            ],
+            "indexed": true,
+            "label": "worker",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [
+              "The task id",
+              "The task id is the index of the task in the tasks storage"
+            ],
+            "indexed": true,
+            "label": "task_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "docs": [
+          "TaskClaimed event",
+          "This event is emitted when a task is claimed successfully",
+          "The event contains the account id of the worker and the task id"
+        ],
+        "label": "TaskClaimed",
+        "module_path": "nocturne_job::nocturne_job",
+        "signature_topic": "0xfff7ae597f7f7793962d35b5faf55c6733c8b88081bef1c2285fddfb9dda4a8f"
+      },
+      {
+        "args": [
+          {
+            "docs": [
+              "The account id of the worker",
+              "The worker is the account id of the worker that failed the task"
+            ],
+            "indexed": true,
+            "label": "worker",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [
+              "The task id"
+            ],
+            "indexed": true,
+            "label": "task_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "docs": [
+          "TaskFailed event",
+          "This event is emitted when a task fails",
+          "The event contains the account id of the worker and the task id"
+        ],
+        "label": "TaskFailed",
+        "module_path": "nocturne_job::nocturne_job",
+        "signature_topic": "0xb4cf07ef123ada7a906ca79ed7d9f1eda402959e55db18c0d97222dc5a21ccfe"
+      }
+    ],
+    "lang_error": {
+      "displayName": [
+        "ink",
+        "LangError"
+      ],
+      "type": 25
+    },
+    "messages": [
+      {
+        "args": [
+          {
+            "label": "cid_manifest",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 3
+            }
+          },
+          {
+            "label": "task_count",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Submit a new job",
+          " The job is created and added to the jobs storage",
+          " The job is created with the creator account id, the data content id and the manifest content id",
+          " The job is created with the status Created",
+          " The job is created with the created_at timestamp",
+          " Submit is a payable function, the caller may attach a deposit to the call. Deposit is a 'tip' for the worker"
+        ],
+        "label": "submit",
+        "mutates": true,
+        "payable": true,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 26
+        },
+        "selector": "0x8eac2baf"
+      },
+      {
+        "args": [
+          {
+            "label": "job_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Claim a job",
+          " The job is updated with the status Pending",
+          " The job is updated with the updated_at timestamp",
+          " The job is updated with the worker account id"
+        ],
+        "label": "claim",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 29
+        },
+        "selector": "0xb388803f"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " Claim first available job",
+          " Scan jobs for most recent available job",
+          " Calls claim with the job id",
+          " Returns an error if no job is available"
+        ],
+        "label": "claim_first",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 29
+        },
+        "selector": "0xcc25d59a"
+      },
+      {
+        "args": [
+          {
+            "label": "job_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "label": "task_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Fail a job",
+          " The job is updated with the status Failed",
+          " The job is updated with the updated_at timestamp",
+          " The worker account id is removed from the job workers"
+        ],
+        "label": "fail",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 26
+        },
+        "selector": "0x59588d40"
+      },
+      {
+        "args": [
+          {
+            "label": "job_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "label": "task_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "label": "cid_result",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 3
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Complete a job task",
+          " The job is updated with the status Completed",
+          " The job is updated with the updated_at timestamp",
+          " The job is updated with the result content id"
+        ],
+        "label": "complete",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 26
+        },
+        "selector": "0x0740d2e1"
+      },
+      {
+        "args": [
+          {
+            "label": "job_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Cancel entire job",
+          " Owner of the job can cancel the job"
+        ],
+        "label": "cancel",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 26
+        },
+        "selector": "0x9796e9a7"
+      },
+      {
+        "args": [
+          {
+            "label": "job_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 8
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Fetch Job by ID",
+          " Returns the job with the job id",
+          " Returns None if the job id is not found"
+        ],
+        "label": "get_job",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 31
+        },
+        "selector": "0x8f0c5a42"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " Fetch all Jobs",
+          " Returns a list of all jobs",
+          " Returns None if there are no jobs"
+        ],
+        "label": "get_jobs",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 34
+        },
+        "selector": "0x13d3c67d"
+      },
+      {
+        "args": [
+          {
+            "label": "job_status",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 37
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Fetch all Jobs by Creator",
+          " Returns a list of all jobs created by the caller",
+          " Filter by job status if provided",
+          " Returns None if there are no jobs created by the caller"
+        ],
+        "label": "get_jobs_by_creator",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 34
+        },
+        "selector": "0xeaf42120"
+      },
+      {
+        "args": [
+          {
+            "label": "job_status",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 37
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Fetch all Jobs by Worker",
+          " Returns a list of all jobs with tasks claimed by the caller",
+          " Filter by job status if provided",
+          " Returns None if there are no jobs claimed by the caller"
+        ],
+        "label": "get_jobs_by_worker",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 34
+        },
+        "selector": "0x9d2e7df2"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "struct": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3a62cf5b",
+                              "ty": 0
+                            }
+                          },
+                          "name": "creator"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3a62cf5b",
+                              "ty": 3
+                            }
+                          },
+                          "name": "cid_manifest"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x3a62cf5b",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "leaf": {
+                                          "key": "0x3a62cf5b",
+                                          "ty": 4
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "cid_results"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x3a62cf5b",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "leaf": {
+                                          "key": "0x3a62cf5b",
+                                          "ty": 5
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "tip"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3a62cf5b",
+                              "ty": 6
+                            }
+                          },
+                          "name": "tasks"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3a62cf5b",
+                              "ty": 11
+                            }
+                          },
+                          "name": "created_at"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x3a62cf5b",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "leaf": {
+                                          "key": "0x3a62cf5b",
+                                          "ty": 11
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "updated_at"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x3a62cf5b",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "leaf": {
+                                          "key": "0x3a62cf5b",
+                                          "ty": 11
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "completed_at"
+                        }
+                      ],
+                      "name": "Job"
+                    }
+                  },
+                  "root_key": "0x3a62cf5b",
+                  "ty": 13
+                }
+              },
+              "name": "jobs"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 8
+                }
+              },
+              "name": "max_retries"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 8
+                }
+              },
+              "name": "max_tasks"
+            }
+          ],
+          "name": "NocturneJob"
+        }
+      },
+      "root_key": "0x00000000",
+      "ty": 23
+    }
+  },
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 1,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "AccountId"
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "def": {
+          "array": {
+            "len": 32,
+            "type": 2
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "primitive": "u8"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "primitive": "str"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 3
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 7
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "id",
+                "type": 8,
+                "typeName": "u32"
+              },
+              {
+                "name": "worker",
+                "type": 9,
+                "typeName": "Option<AccountId>"
+              },
+              {
+                "name": "status",
+                "type": 10,
+                "typeName": "JobStatus"
+              },
+              {
+                "name": "retries",
+                "type": 8,
+                "typeName": "u32"
+              },
+              {
+                "name": "created_at",
+                "type": 11,
+                "typeName": "Timestamp"
+              },
+              {
+                "name": "updated_at",
+                "type": 12,
+                "typeName": "Option<Timestamp>"
+              },
+              {
+                "name": "completed_at",
+                "type": 12,
+                "typeName": "Option<Timestamp>"
+              }
+            ]
+          }
+        },
+        "path": [
+          "nocturne_job",
+          "nocturne_job",
+          "Task"
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "primitive": "u32"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 0
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 0
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "Created"
+              },
+              {
+                "index": 1,
+                "name": "InProgress"
+              },
+              {
+                "index": 2,
+                "name": "Failed"
+              },
+              {
+                "index": 3,
+                "name": "Completed"
+              }
+            ]
+          }
+        },
+        "path": [
+          "nocturne_job",
+          "nocturne_job",
+          "JobStatus"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "def": {
+          "primitive": "u64"
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 11
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 11
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "len",
+                "type": 21,
+                "typeName": "Lazy<u32, KeyType>"
+              },
+              {
+                "name": "elements",
+                "type": 22,
+                "typeName": "Mapping<u32, V, KeyType>"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "V",
+            "type": 14
+          },
+          {
+            "name": "KeyType",
+            "type": 17
+          }
+        ],
+        "path": [
+          "ink_storage",
+          "lazy",
+          "vec",
+          "StorageVec"
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "creator",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "cid_manifest",
+                "type": 3,
+                "typeName": "String"
+              },
+              {
+                "name": "cid_results",
+                "type": 15,
+                "typeName": "Option<Vec<String>>"
+              },
+              {
+                "name": "tip",
+                "type": 16,
+                "typeName": "Option<Balance>"
+              },
+              {
+                "name": "tasks",
+                "type": 6,
+                "typeName": "Vec<Task>"
+              },
+              {
+                "name": "created_at",
+                "type": 11,
+                "typeName": "Timestamp"
+              },
+              {
+                "name": "updated_at",
+                "type": 12,
+                "typeName": "Option<Timestamp>"
+              },
+              {
+                "name": "completed_at",
+                "type": 12,
+                "typeName": "Option<Timestamp>"
+              }
+            ]
+          }
+        },
+        "path": [
+          "nocturne_job",
+          "nocturne_job",
+          "Job"
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 4
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 5
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 5
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "L",
+            "type": 18
+          },
+          {
+            "name": "R",
+            "type": 19
+          }
+        ],
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "AutoKey"
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 20
+          }
+        ],
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "V",
+            "type": 8
+          },
+          {
+            "name": "KeyType",
+            "type": 17
+          }
+        ],
+        "path": [
+          "ink_storage",
+          "lazy",
+          "Lazy"
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "def": {
+          "composite": {}
+        },
+        "params": [
+          {
+            "name": "K",
+            "type": 8
+          },
+          {
+            "name": "V",
+            "type": 14
+          },
+          {
+            "name": "KeyType",
+            "type": 17
+          }
+        ],
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "jobs",
+                "type": 13,
+                "typeName": "<StorageVec<Job> as::ink::storage::traits::AutoStorableHint<::\nink::storage::traits::ManualKey<1540317754u32, ()>,>>::Type"
+              },
+              {
+                "name": "max_retries",
+                "type": 8,
+                "typeName": "<u32 as::ink::storage::traits::AutoStorableHint<::ink::storage\n::traits::ManualKey<4232207676u32, ()>,>>::Type"
+              },
+              {
+                "name": "max_tasks",
+                "type": 8,
+                "typeName": "<u32 as::ink::storage::traits::AutoStorableHint<::ink::storage\n::traits::ManualKey<126827330u32, ()>,>>::Type"
+              }
+            ]
+          }
+        },
+        "path": [
+          "nocturne_job",
+          "nocturne_job",
+          "NocturneJob"
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 20
+          },
+          {
+            "name": "E",
+            "type": 25
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 1,
+                "name": "CouldNotReadInput"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "LangError"
+        ]
+      }
+    },
+    {
+      "id": 26,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 27
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 27
+          },
+          {
+            "name": "E",
+            "type": 25
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 28
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 20
+          },
+          {
+            "name": "E",
+            "type": 28
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "SubmitFailed"
+              },
+              {
+                "index": 1,
+                "name": "ClaimFailed"
+              },
+              {
+                "index": 2,
+                "name": "NoJobs"
+              },
+              {
+                "index": 3,
+                "name": "UpdateFailed"
+              },
+              {
+                "index": 4,
+                "name": "Failed"
+              },
+              {
+                "index": 5,
+                "name": "NotOwner"
+              },
+              {
+                "index": 6,
+                "name": "NotWorker"
+              },
+              {
+                "index": 7,
+                "name": "CallerBusy"
+              }
+            ]
+          }
+        },
+        "path": [
+          "nocturne_job",
+          "nocturne_job",
+          "Error"
+        ]
+      }
+    },
+    {
+      "id": 29,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 30
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 30
+          },
+          {
+            "name": "E",
+            "type": 25
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 14
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 28
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 14
+          },
+          {
+            "name": "E",
+            "type": 28
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 31,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 32
+          },
+          {
+            "name": "E",
+            "type": 25
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 32,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 33
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 28
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 33
+          },
+          {
+            "name": "E",
+            "type": 28
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 33,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 14
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 14
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 34,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 35
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 35
+          },
+          {
+            "name": "E",
+            "type": 25
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 35,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 36
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 36
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 36,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 14
+          }
+        }
+      }
+    },
+    {
+      "id": 37,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 10
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 38,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 1,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "Hash"
+        ]
+      }
+    },
+    {
+      "id": 39,
+      "type": {
+        "def": {
+          "variant": {}
+        },
+        "path": [
+          "ink_env",
+          "types",
+          "NoChainExtension"
+        ]
+      }
+    }
+  ],
+  "version": 5
+}
