@@ -1,0 +1,3 @@
+export const JOB_CONTRACT_ADDRESS = process.env.JOB_CONTRACT_ADDRESS ?? '';
+export const TAP_TRAIN_CONTRACT_ADDRESS = process.env.TAP_TRAIN_CONTRACT_ADDRESS ?? '';
+export const APTOS_ACCOUNT_PRIVATE_KEY = process.env.APTOS_ACCOUNT_PRIVATE_KEY ?? '';

@@ -1,0 +1,21 @@
+{
+  "name": "taptrain_job_listener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "Immutable Labs",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.27.1",
+    "dotenv": "^16.4.5"
+  }
+}
